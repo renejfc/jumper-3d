@@ -1,0 +1,54 @@
+[gd_scene load_steps=12 format=3 uid="uid://q7hgjn6mnlly"]
+
+[ext_resource type="Texture2D" uid="uid://bjo0lu2eyci3x" path="res://assets/textures/stylized-bricks/base-color.png" id="1_enlkq"]
+[ext_resource type="Texture2D" uid="uid://flrkcv3imy6b" path="res://assets/textures/stylized-bricks/ambient-occlusion.png" id="2_54vaj"]
+[ext_resource type="Texture2D" uid="uid://dr060qeudxdrr" path="res://assets/textures/stylized-bricks/height.png" id="3_miqxb"]
+[ext_resource type="Texture2D" uid="uid://bqiarqgw8kxvl" path="res://assets/textures/stylized-bricks/normal.png" id="4_kswdh"]
+[ext_resource type="PackedScene" uid="uid://btmtwdbahisg6" path="res://char/char.tscn" id="5_pgt8m"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_d3ah4"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_5fsms"]
+sky_material = SubResource("ProceduralSkyMaterial_d3ah4")
+
+[sub_resource type="Environment" id="Environment_px8mo"]
+background_mode = 2
+sky = SubResource("Sky_5fsms")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sfwja"]
+albedo_texture = ExtResource("1_enlkq")
+normal_texture = ExtResource("4_kswdh")
+ao_texture = ExtResource("2_54vaj")
+heightmap_texture = ExtResource("3_miqxb")
+uv1_scale = Vector3(5, 5, 5)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_u8tfp"]
+material = SubResource("StandardMaterial3D_sfwja")
+size = Vector2(30, 30)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_jiyrj"]
+data = PackedVector3Array(15, 0, 15, -15, 0, 15, 15, 0, -15, -15, 0, 15, -15, 0, -15, 15, 0, -15)
+
+[node name="Level" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_px8mo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_u8tfp")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_jiyrj")
+
+[node name="Char" parent="." instance=ExtResource("5_pgt8m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1, 2.08165e-12)
