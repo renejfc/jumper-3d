@@ -1,22 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://btmtwdbahisg6"]
+[gd_scene load_steps=4 format=3 uid="uid://btmtwdbahisg6"]
+
+[ext_resource type="Script" path="res://char/char.gd" id="1_kua17"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wsqf8"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_2jigs"]
 
 [node name="Char" type="CharacterBody3D"]
+script = ExtResource("1_kua17")
+
+[node name="TwistPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 3, 2.08165e-12)
+
+[node name="PitchPivot" type="Node3D" parent="TwistPivot"]
+transform = Transform3D(1, -4.39059e-16, 3.36903e-16, 3.36902e-16, 0.965926, 0.258819, -4.3906e-16, -0.258819, 0.965926, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="TwistPivot/PitchPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 7)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_wsqf8")
-
-[node name="TwistPivot" type="Node3D" parent="CollisionShape3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 3, 2.08165e-12)
-
-[node name="PitchPivot" type="Node3D" parent="CollisionShape3D/TwistPivot"]
-transform = Transform3D(1, -4.3906e-16, 3.36902e-16, 3.36902e-16, 0.965926, 0.258819, -4.3906e-16, -0.258819, 0.965926, 0, 0, 0)
-
-[node name="Camera3D" type="Camera3D" parent="CollisionShape3D/TwistPivot/PitchPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 7)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("CapsuleMesh_2jigs")
